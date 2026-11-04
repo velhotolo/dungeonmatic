@@ -1,5 +1,5 @@
 return {
-    name = "Zabaralau Crypt"
+    name = "Zabaralau Crypt",
     start = { x = 2, y = 2, dir = 2 },
     rows = {
         "################",
