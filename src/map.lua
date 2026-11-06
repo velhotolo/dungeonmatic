@@ -11,13 +11,17 @@ Map.TYPES = {
 
 -- creates a map froma list of lines and text
 function Map.new(rows)
-    local map = { cells = {}, width = 0, height = #rows }
+    local map = { cells = {}, seen = {}, width = 0, height = #rows }
     setmetatable(map, Map)
+
     for y, row in ipairs(rows) do
         map.cells[y] = {}
+        map.seen[y] = {}
+
         if #row > map.width then
             map.width = #row
         end
+
         for x = 1, #row do
             local char = row:sub(x, x)
             local kind = Map.TYPES[char]
@@ -27,6 +31,7 @@ function Map.new(rows)
             map.cells[y][x] = kind
         end
     end
+
     return map
 end
 
@@ -47,6 +52,21 @@ end
 function Map:isSolid(x, y)
     local kind = self:cell(x, y)
     return kind == "wall" or kind == "secret"
+end
+
+function Map:markSeen(x, y)
+    local row = self.cells[y]
+    if row ~= nil and row[x] ~= nil then
+        self.seen[y][x] = true
+    end
+end
+
+function Map:wasSeen(x, y)
+    local row = self.seen[y]
+    if row == nil then
+        return false
+    end
+    return row[x] == true
 end
 
 return Map

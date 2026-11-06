@@ -1,4 +1,11 @@
 -- the map from above
+-- colours stay outside the function, because they're the same in each frame.
+-- the function goes through each cell and draws each one like e filled frame
+-- the math behind it: The cell (x, y) beings at x0 + (x -1) * size. The -1 exists because the grid
+-- starts in 1 and the screen at 0: the cell n 1 stays exactly at x0.
+-- square side is size - 1: the pixel leftover turns into a dark line between cells.
+-- love.graphics.SetColor directly accepts a color table: setColor (WALL_COLOR) (this is magic)
+-- in the end, colour comes back to white. It will allow freedom to draw something better in the future.
 local direction = require("src.direction")
 
 local minimap = {}
@@ -33,14 +40,16 @@ end
 function minimap.draw(map, party, x0, y0, size)
     for y = 1, map.height do
         for x = 1, map.width do
-            if map:isSolid(x, y) then
-                love.graphics.setColor(WALL_COLOR)
-            else
-                love.graphics.setColor(FLOOR_COLOR)
+            if map:wasSeen(x, y) then
+                if map:isSolid(x, y) then
+                    love.graphics.setColor(WALL_COLOR)
+                else
+                    love.graphics.setColor(FLOOR_COLOR)
+                end
+                love.graphics.rectangle("fill",
+                    x0 + (x - 1) * size, y0 + (y - 1) * size,
+                    size - 1, size - 1)
             end
-            love.graphics.rectangle("fill",
-                x0 + (x - 1) * size, y0 + (y - 1) * size,
-                size - 1, size - 1)
         end
     end
     drawParty(party, x0, y0, size)
@@ -48,11 +57,3 @@ function minimap.draw(map, party, x0, y0, size)
 end
 
 return minimap
-
--- colours stay outside the function, because they're the same in each frame.
--- the function goes through each cell and draws each one like e filled frame
--- the math behind it: The cell (x, y) beings at x0 + (x -1) * size. The -1 exists because the grid
--- starts in 1 and the screen at 0: the cell n 1 stays exactly at x0.
--- square side is size - 1: the pixel leftover turns into a dark line between cells.
--- love.graphics.SetColor directly accepts a color table: setColor (WALL_COLOR) (this is magic)
--- in the end, colour comes back to white. It will allow freedom to draw something better in the future.
