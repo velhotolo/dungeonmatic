@@ -1,5 +1,5 @@
 return {
-    name = "Zabaralau Crypt",
+    name = "Omenstone Crypt",
     start = { x = 2, y = 2, dir = 2 },
     rows = {
         "################",
@@ -16,4 +16,9 @@ return {
         "#..............#",
         "################",
     },
+    monsters = {
+        { kind = "rat",      x = 2,  y = 2, count = 1 },
+        { kind = "skeleton", x = 11, y = 7, count = 2 },
+        { kind = "ghoul",    x = 1,  y = 2, count = 1 },
+    }
 }

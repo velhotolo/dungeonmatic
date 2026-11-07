@@ -3,8 +3,8 @@
 
 
 return {
-    { name = "Bracóvia",   attributes = { brute = 4, skill = 1, endure = 5 } },
-    { name = "Tamitetete", attributes = { brute = 2, skill = 5, endure = 2 } },
-    { name = "Nobutada",   attributes = { brute = 3, skill = 3, endure = 3 } },
-    { name = "Zabraguil",  attributes = { brute = 3, skill = 2, endure = 3 } },
+    { name = "Bracóvia", attributes = { brute = 4, skill = 1, endure = 5 } },
+    { name = "Tamith",   attributes = { brute = 2, skill = 5, endure = 3 } },
+    { name = "Nobutada", attributes = { brute = 3, skill = 4, endure = 3 } },
+    { name = "Zabral",   attributes = { brute = 5, skill = 2, endure = 3 } },
 }

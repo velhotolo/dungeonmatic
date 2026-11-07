@@ -13,6 +13,7 @@ local minimap = {}
 local FLOOR_COLOR = { 0.30, 0.27, 0.22 }
 local WALL_COLOR = { 0.62, 0.45, 0.45 }
 local PARTY_COLOR = { 0.85, 0.64, 0.25 }
+local MONSTER_COLOR = { 0.95, 0.84, 0.55 }
 
 -- a triangle on the center of the group's cell, pointing to where they look
 local function drawParty(party, x0, y0, size)
@@ -50,6 +51,15 @@ function minimap.draw(map, party, x0, y0, size)
                     x0 + (x - 1) * size, y0 + (y - 1) * size,
                     size - 1, size - 1)
             end
+        end
+    end
+    love.graphics.setColor(MONSTER_COLOR)
+    for _, group in ipairs(groups or {}) do
+        if map:wasSeen(group.x, group.y) then
+            love.graphics.rectangle("fill",
+                x0 + (group.x - 1) * size + size * 0.25,
+                y0 + (group.y - 1) * size + size * 0.25,
+                size * 0.5, size * 0.5)
         end
     end
     drawParty(party, x0, y0, size)

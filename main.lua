@@ -9,6 +9,7 @@ local messages = require("src.messages")
 local sandbox = require("src.sandbox")
 local rules = require("src.rules")
 local panel = require("src.panel")
+local monsters = require("src.monsters")
 
 
 local LEVEL = "level1" --current level
@@ -16,8 +17,10 @@ local map              -- current floor
 local party            -- the coterie
 local font
 local system
+local bestiary
+local groups
 local RANGE = sight.DEPTH
-local SYSTEM
+local SYSTEM = "bosano"
 
 local function readData(path)
     local text = assert(love.filesystem.read(path), "can't find it " .. path)
@@ -25,15 +28,21 @@ local function readData(path)
 end
 
 local function loadSystem(name)
-    local pth = "systems/" .. name .. "/rules.lua"
-    local text = assert(love.filesystem.read(pth), "can't find it " .. pth)
-    return assert(rules.load(text, pth))
+    local path = "systems/" .. name .. "/rules.lua"
+    local text = assert(love.filesystem.read(path), "can't find it " .. path)
+    return assert(rules.load(text, path))
 end
 
 -- try to walk, if there's a wall, the couterie don't move
 local function walk(ahead, side)
-    if party:step(map, ahead, side) then
+    local tx, ty = direction.toGrid(party.x, party.y, party.dir, ahead, side)
+    local group = monsters.at(groups, tx, ty)
+    if group then
+        messages.add("On the way: " .. monsters.label(group) .. ".")
+    elseif party:step(map, ahead, side) then
         party:look(map, RANGE)
+    else
+        messages.add("You hit the wall.")
     end
 end
 
@@ -47,30 +56,41 @@ local function turn(toRight)
     party:look(map, RANGE)
     messages.add("You turn to " .. direction.NAMES[party.dir] .. ".")
 end
-
+local function search()
+    local attribute = system.exploration.search
+    local who = rules.best(party.members, attribute)
+    local fx, fy = direction.toGrid(party.x, party.y, party.dir, 1, 0)
+    local success, text = rules.test(system, who, attribute, map.secretDifficulty)
+    lastActor = who
+    if success and map:cell(fx, fy) == "secret" then
+        map:set(fx, fy, "floor")
+        messages.add(who.name .. " finds a secret passage! " .. text)
+        party:look(map, RANGE)
+    else
+        messages.add(who.name .. " search but finds nothing. " .. text)
+    end
+end
 function love.load()
     font = love.graphics.newFont(14)
+
+    love.graphics.setFont(font)
     love.graphics.setBackgroundColor(0.09, 0.10, 0.12)
-
-    -- 1. Carrega o sistema PRIMEIRO
-    system = loadSystem("bosano")
-
-    -- 2. Carrega o mapa e a posição inicial
+    system = loadSystem(SYSTEM)
     local level = readData("maps/" .. LEVEL .. ".lua")
     map = Map.new(level.rows)
     map.name = level.name
-
-    -- 3. AGORA cria a party na posição que o mapa mandou
+    map.secretDifficulty = level.secretDifficulty or 1
     party = Party.new(level.start.x, level.start.y, level.start.dir)
+    party:look(map, RANGE)
 
-    -- 4. Com o sistema e a party prontos, gera os heróis e os insere na equipe
     for _, def in ipairs(readData("party_start.lua")) do
         local c = assert(rules.newCharacter(system, def.name, def.attributes))
         table.insert(party.members, c)
     end
 
-    party:look(map, RANGE)
-    messages.add("You enter.. " .. map.name .. ".")
+    bestiary = readData("systems/" .. SYSTEM .. "/bestiary.lua")
+    groups = assert(monsters.create(system, bestiary, level.monsters))
+    messages.add("You enter in " .. map.name .. ".")
 end
 
 function love.keypressed(key)
@@ -94,11 +114,11 @@ function love.keypressed(key)
 end
 
 function love.draw()
+    sight.draw(map, party, 16, 16, 576, 360, groups)
     panel.draw(system, party.members, 16, 380, 576, 120, party.members[1])
-    sight.draw(map, party, 16, 16, 576, 360)
     love.graphics.setColor(0.33, 0.35, 0.40)
     love.graphics.rectangle("line", 16, 16, 576, 360)
-    minimap.draw(map, party, 616, 16, 20)
+    minimap.draw(map, party, 616, 16, 20, groups)
     love.graphics.setColor(0.90, 0.86, 0.78)
     love.graphics.print(("%s (%d, %d) looking at %s"):format(
         map.name, party.x, party.y, direction.NAMES[party.dir]), 616, 296)

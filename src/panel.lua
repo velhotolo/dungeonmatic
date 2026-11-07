@@ -30,7 +30,6 @@ local function card(system, c, x, y, w, h, highlight)
         love.graphics.setColor(BORDER_COLOR)
     end
     love.graphics.rectangle("line", x, y, w, h, 4, 4)
-    -- 4, 4: cantos redondos
     love.graphics.setColor(NAME_COLOR)
     love.graphics.print(c.name, x + 8, y + 6)
     local lineY = y + 28

@@ -9,7 +9,7 @@ Map.TYPES = {
 
 }
 
--- creates a map froma list of lines and text
+-- creates a map from a list of lines and text
 function Map.new(rows)
     local map = { cells = {}, seen = {}, width = 0, height = #rows }
     setmetatable(map, Map)
