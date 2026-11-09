@@ -11,6 +11,7 @@ local SIDE = { 0.42, 0.38, 0.32 }
 
 local imageCache = {}
 
+
 local function halfWidth(w, k)
     return (w / 2) / (k + 1)
 end
@@ -159,4 +160,3 @@ function sight.draw(map, party, x0, y0, w, h, groups)
 end
 
 return sight
-

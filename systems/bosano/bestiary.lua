@@ -2,7 +2,7 @@ return {
     rat = {
         name = "Giant rat",
         plural = "Giant rats",
-        attributes = { brute = 2, skill = 1, endure = 1 },
+        attributes = { str = 2, abi = 1, endu = 1 },
         xp = 5,
         look = {
             image = ("assets/sprites/grat.png"),
@@ -13,7 +13,7 @@ return {
     skeleton = {
         name = "Skeleton",
         plural = "Skeletons",
-        attributes = { brute = 4, skill = 2, endure = 4 },
+        attributes = { str = 4, abi = 2, endu = 4 },
         xp = 40,
         look = {
             image = ("assets/sprites/skeleton.png"),
@@ -24,7 +24,7 @@ return {
     ghoul = {
         name = "Ghoul",
         plural = "Ghouls",
-        attributes = { brute = 6, skill = 4, endure = 8 },
+        attributes = { str = 6, abi = 4, endu = 8 },
         xp = 60,
         look = {
             image = ("assets/sprites/ghoul.png"),

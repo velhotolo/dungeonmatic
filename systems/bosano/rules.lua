@@ -11,9 +11,9 @@ return {
     name = "Bosano System",
     version = 1,
     attributes = {
-        { id = "brute",  name = "strength",  min = 1, max = 5 },
-        { id = "skill",  name = "abilitiy",  min = 1, max = 5 },
-        { id = "endure", name = "endurance", min = 1, max = 5 },
+        { id = "str",  name = "strength",  min = 1, max = 5 },
+        { id = "abi",  name = "ability",   min = 1, max = 5 },
+        { id = "endu", name = "endurance", min = 1, max = 5 },
 
     },
 
@@ -27,8 +27,17 @@ return {
 
             id = "health",
             name = "hp",
-            max = function(c) return 5 * c.attributes.endure end,
+            max = function(c) return 5 * c.attributes.endurance end,
         },
+    },
+
+    traits = {
+        dual_weapon = { name = "Dual Weapon", cost = 2, desc = "Hits twice" },
+        range = { name = "Range", cost = 1, desc = "Hits from a distance" },
+        defensive = { name = "Defensive", cost = 2, desc = "Absorb damage when hit" },
+        wizard = { name = "Wizard", cost = 3, desc = "Learn spells" }
+
+
     },
 
     test = function(c, attribute, difficulty, ctx)
@@ -57,6 +66,6 @@ return {
         return success, text
     end,
     exploration = {
-        search = "skill"
+        search = "abi"
     },
 }
