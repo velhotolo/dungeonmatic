@@ -9,6 +9,14 @@
 
 > *A dungeon crawler being built the hard way, fueled by sweat, tears, and late-night documentation reading.*
 
+Izzzdeidas:
+
+<img width="1588" height="1051" alt="Image" src="https://github.com/user-attachments/assets/bfbb3db3-9526-44f9-a712-93ff07db60aa" />
+
+<img width="1588" height="1051" alt="Image" src="https://github.com/user-attachments/assets/ae8d33fa-da38-4146-9605-dffa4af7d0a8" />
+
+<img width="1588" height="1051" alt="Image" src="https://github.com/user-attachments/assets/96aaca59-306b-4ece-9a35-329831ae8f5b" />
+
 ## 📜 About the Project
 
 This project was born from my desire to learn [LÖVE2D](https://love2d.org/) and game development using Lua. The reality? It's a humble project, built with a lot of
