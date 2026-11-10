@@ -43,6 +43,14 @@ local function loadSystem(name)
     return assert(rules.load(text, path))
 end
 
+local function endTurn()
+    local group = monsters.advance(groups, map, party)
+    if group then
+        messages.add("Beside you: " .. monsters.label(group) .. "!")
+    end
+end
+
+
 local function walk(ahead, side)
     local tx, ty = direction.toGrid(party.x, party.y, party.dir, ahead, side)
     local group = monsters.at(groups, tx, ty)
@@ -50,9 +58,11 @@ local function walk(ahead, side)
         messages.add("On the way: " .. monsters.label(group) .. ".")
     elseif party:step(map, ahead, side) then
         party:look(map, RANGE)
+        return true
     else
         messages.add("You hit the wall.")
     end
+    return false
 end
 
 local function turn(toRight)
@@ -106,6 +116,7 @@ end
 function love.update(dt)
     if _G.gameState == "menu" then
         menu.update(dt)
+        charSelect.update(dt)
     elseif _G.gameState == "playing" then
         if #party.members == 0 and menu.characters then
             for _, charData in ipairs(menu.characters) do
@@ -192,6 +203,7 @@ function love.keypressed(key, scancode, isrepeat)
     end
 
     if _G.gameState == "playing" then
+        local acted = false
         if key == "w" or key == "up" then
             walk(1, 0)
         elseif key == "s" or key == "down" then

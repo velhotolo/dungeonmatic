@@ -10,14 +10,14 @@ local COLOR_WARN = { 0.9, 0.8, 0.2 } -- Yellow for leftover points
 local stats = { str = 1, abi = 1, ["end"] = 1 }
 
 local traits = {
-    { name = "Dual Weapon",   cost = 2,  active = false },
-    { name = "Range",         cost = 1,  active = false },
-    { name = "Defensive",     cost = 2,  active = false },
-    { name = "Wizard",        cost = 3,  active = false },
-    { name = "Slow",          cost = -1, active = false },
-    { name = "Jinxed",        cost = -2, active = false },
-    { name = "Not a Fighter", cost = -1, active = false },
-    { name = "Cowardice",     cost = -2, active = false }
+    { name = "dualWeapon",  cost = 2,  active = false },
+    { name = "range",       cost = 1,  active = false },
+    { name = "defensive",   cost = 2,  active = false },
+    { name = "wizard",      cost = 3,  active = false },
+    { name = "slow",        cost = -1, active = false },
+    { name = "jinxed",      cost = -2, active = false },
+    { name = "notAfighter", cost = -1, active = false },
+    { name = "cowardice",   cost = -2, active = false }
 }
 
 local hitboxes = {}
